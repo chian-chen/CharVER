@@ -43,7 +43,7 @@ intensity_feat = zeros(kk, 2);   % 1 for mean, 2 for std
 for i = 1 : k
     a = DataBase{i};
     a(a == 255) = 0;
-    w = sum(sum(a>0));
+    w = sum(sum(a > 0));
     Y_mean = sum(sum(a))/w;
     Y_std = sqrt( sum(sum((a - Y_mean).^2)) / w );
     intensity_feat(i, 1) = Y_mean;

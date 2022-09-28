@@ -105,13 +105,25 @@ sum_check(sum_check < 10e-10) = 0;  % should be all zeros
 
 % train_set, test_set and labels
 % 1: 本人  0: 非本人
-one = ones(1, 25);
-zero = zeros(1, 25);
+one = ones(1, 5);
+zero = zeros(1, 5);
 
 train_features = [Proj_features(1:25, :); Proj_features(51:75, :)]; 
 train_labels = [one zero].';
 test_features = [Proj_features(26:50, :); Proj_features(76:100, :)]; 
 test_labels = [one zero].';
+
+
+% train_features = [Proj_features(1:5, :); Proj_features(51:55, :); Proj_features(6:15, :);
+%     Proj_features(56:65, :); Proj_features(16:25, :); Proj_features(66:75, :)]; 
+% 
+% train_labels = [one zero one one zero zero one one zero zero].';
+% 
+% test_features = [Proj_features(26:30, :); Proj_features(76:80, :); Proj_features(31:40, :);
+%     Proj_features(81:90, :); Proj_features(41:50, :); Proj_features(91:100, :)]; 
+% 
+% test_labels = [one zero one one zero zero one one zero zero].';
+
 
 model = svmtrain(train_labels, train_features);
 % test
