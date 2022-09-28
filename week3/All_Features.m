@@ -137,7 +137,7 @@ end
 
 % Check the validity for features, set 90% zeros columns to all zeros
 
-for i = 1:10
+for i = 1:24
     value = sum(Features(:, i) > 0);
     if(value/kk <= 0.1)
         Features(:, i) = zeros(kk, 1);
