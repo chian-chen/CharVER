@@ -61,7 +61,7 @@ for i = 1 : k
 end
 
 for i = k + 1 : kk
-    a = DataBase{i - k};
+    a = TestCase{i - k};
     a(a == 255) = 0;
     a(a > 0) = 1;
     Proj_features(i, 1) = sum(sum(a(1:s1, :)));
