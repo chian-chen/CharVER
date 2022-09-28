@@ -105,8 +105,8 @@ sum_check(sum_check < 10e-10) = 0;  % should be all zeros
 
 % train_set, test_set and labels
 % 1: 本人  0: 非本人
-one = ones(1, 5);
-zero = zeros(1, 5);
+one = ones(1, 25);
+zero = zeros(1, 25);
 
 train_features = [Proj_features(1:25, :); Proj_features(51:75, :)]; 
 train_labels = [one zero].';
