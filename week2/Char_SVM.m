@@ -76,7 +76,7 @@ for i = k + 1 : kk
     Proj_features(i, 10) = sum(sum(a(:, s4:end)));
 end
 
-% Check the validity for features
+% Check the validity for features, set 90% zeros columns to all zeros
 
 for i = 1:10
     value = sum(Proj_features(:, i) > 0);
@@ -86,7 +86,6 @@ for i = 1:10
 end
 
 % data( :, ~any(data,1) ) = []; remove all zero columns
-
 Proj_features(:, ~any(Proj_features, 1)) = [];
 
 % SVM
