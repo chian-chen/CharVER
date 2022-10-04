@@ -1,10 +1,10 @@
 % DataBase, TestCase
 
-d = dir('./1/database/*.bmp');
-path = './1/database/';
+d = dir('../1/database/*.bmp');
+path = '../1/database/';
 
-t = dir('./1/testcase/*.bmp');
-path_t = './1/testcase/';
+t = dir('../1/testcase/*.bmp');
+path_t = '../1/testcase/';
 
 k = numel(d);
 
