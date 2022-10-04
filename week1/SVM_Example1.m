@@ -1,7 +1,7 @@
 % SVM Example 1 for LIBSVM 
 
 % 輸入 LIBSVM (Matlab version) 所在的資料夾
-addpath('/Users/chenqian/Desktop/CharVER/week1/matlab');
+addpath('/Users/chenqian/Desktop/CharVER/matlab');
 
 % training data and labels
 features_a=[125,160,180,176,135,155,167,173,154,170;

@@ -1,7 +1,7 @@
 % Pratice img processing
 
-d = dir('./1/database/*.bmp');
-path = './1/database/';
+d = dir('../1/database/*.bmp');
+path = '../1/database/';
 k = numel(d);
 
 im = double(imread(strcat(path ,d(1).name)));
