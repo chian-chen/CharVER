@@ -28,16 +28,10 @@ for i = 1 : k
   TestCase{i} = double(Y);
 end
 
-% show one sample of both sets
-
-figure; image(DataBase{1});
-colormap(gray(256))
-figure; image(TestCase{1});
-colormap(gray(256))
 
 % Projection feature
 kk = k + k;
-Features = zeros(kk, 24);   
+Features = zeros(kk, 26);   
 
 % divide array to 5 parts, in this dataset m == n, so just do the process once
 [m, n] = size(DataBase{1});
@@ -87,6 +81,11 @@ for i = 1 : k
     Features(i, 14) = v10; Features(i, 15) = v01; Features(i, 16) = v11;
     Features(i, 17) = v20; Features(i, 18) = v02; Features(i, 19) = v30;
     Features(i, 20) = v03; Features(i, 21) = v21; Features(i, 22) = v12;
+    
+    % width
+    width_result = Thinning_K3M(B);
+    Features(i, 25) = width_result(1);
+    Features(i, 26) = width_result(2);
 end
 
 for i = k+1 : kk
@@ -132,6 +131,11 @@ for i = k+1 : kk
     Features(i, 14) = v10; Features(i, 15) = v01; Features(i, 16) = v11;
     Features(i, 17) = v20; Features(i, 18) = v02; Features(i, 19) = v30;
     Features(i, 20) = v03; Features(i, 21) = v21; Features(i, 22) = v12;
+    
+    % width
+    width_result = Thinning_K3M(B);
+    Features(i, 25) = width_result(1);
+    Features(i, 26) = width_result(2);
 end
 
 

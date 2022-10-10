@@ -31,7 +31,7 @@ end
 % show one sample of both sets
 
 
-B = DataBase{1};
+B = TestCase{1};
 B(B == 255) = 0;
 B(B > 0) = 1;
 ChangePoint = 1;

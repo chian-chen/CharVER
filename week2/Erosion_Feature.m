@@ -74,7 +74,7 @@ for i = k+1 : kk
 end
 
 % SVM
-addpath('/Users/chenqian/Desktop/CharVER/week1/matlab');
+addpath('/Users/chenqian/Desktop/CharVER/matlab');
 
 % normalization
 [m,N] = size(Erosion_feat);

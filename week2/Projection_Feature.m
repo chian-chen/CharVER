@@ -89,7 +89,7 @@ end
 Proj_features(:, ~any(Proj_features, 1)) = [];
 
 % SVM
-addpath('/Users/chenqian/Desktop/CharVER/week1/matlab');
+addpath('/Users/chenqian/Desktop/CharVER/matlab');
 
 % normalization
 [m,N] = size(Proj_features);
