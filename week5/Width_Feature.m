@@ -35,7 +35,7 @@ colormap(gray(256))
 figure; image(TestCase{1});
 colormap(gray(256))
 
-% Intensity
+% Width
 
 kk = k + k;
 Width_feat = zeros(kk, 2);   % 1 for mean, 2 for std
