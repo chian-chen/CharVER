@@ -43,14 +43,9 @@ colormap(gray(256))
 
 
 Difference1 = Difference(B, Ref{1}, EndPoints);
-D1 = sum(Difference1);
 Difference2 = Difference(B, Ref{2}, EndPoints);
-D2 = sum(Difference2);
 Difference3 = Difference(B, Ref{3}, EndPoints);
-D3 = sum(Difference3);
 Difference4 = Difference(B, Ref{4}, EndPoints);
-D4 = sum(Difference4);
-
 
 
 
