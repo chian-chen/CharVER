@@ -20,6 +20,7 @@ end
 B = DataBase{1};
 B(B == 255) = 0;    B(B > 0) = 1;
 
+
 % normalized location
 [x, y] = find(B);
 [m_new, n_new] = NormLocation(B, x, y);
