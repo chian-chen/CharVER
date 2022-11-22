@@ -34,7 +34,7 @@ for i = 1:4
 end
 
 
-B = DataBase{1};
+B = DataBase{2};
 figure;
 image(B*255);
 colormap(gray(256))
