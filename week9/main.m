@@ -30,8 +30,10 @@ end
 
 
 % Projection feature
+Features_Num = 56;
+
 kk = k + k;
-Features = zeros(kk, 56);   
+Features = zeros(kk, Features_Num);   
 
 
 for i = 1 : k
@@ -69,7 +71,10 @@ for i = k+1 : kk
     % Intensity
     Features(i, 23:24) = Intensity_Feature(B);
     
-    B(B > 0) = 1;
+    B = TestCase{i - k};
+    B(B < 255) = 1;
+    B(B == 255) = 0;
+    
     
     % Projection
     Features(i, 1:10) = Projection_Feature(B);
@@ -90,7 +95,7 @@ end
 
 % Check the validity for features, set 90% zeros columns to all zeros
 
-for i = 1:56
+for i = 1:Features_Num
     value = sum(Features(:, i) > 0);
     if(value/kk <= 0.1)
         Features(:, i) = zeros(kk, 1);
