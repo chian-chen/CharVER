@@ -1,10 +1,10 @@
 % DataBase, TestCase
 
-d = dir('../1/database/*.bmp');
-path = '../1/database/';
+d = dir('../2/database/*.bmp');
+path = '../2/database/';
 
-t = dir('../1/testcase/*.bmp');
-path_t = '../1/testcase/';
+t = dir('../2/testcase/*.bmp');
+path_t = '../2/testcase/';
 
 k = numel(d);
 
@@ -13,18 +13,23 @@ TestCase = cell(1, k);
 
 for i = 1 : k
   im = double(imread(strcat(path, d(i).name)));
-  R = im(:, :, 1);
-  G = im(:, :, 2);
-  B = im(:, :, 3);
+  R = im(:, :, 1); G = im(:, :, 2); B = im(:, :, 3);
   Y = 0.299 .* R + 0.587 .* G + 0.114 .* B;
+  
   Y(Y > 220) = 255;
+  Y(1, :) = 255; Y(end, :) = 255;
+  Y(:, 1) = 255; Y(:, end) = 255;
+  
   DataBase{i} = double(Y);
+  
   im = double(imread(strcat(path_t, t(i).name)));
-  R = im(:, :, 1);
-  G = im(:, :, 2);
-  B = im(:, :, 3);
+  R = im(:, :, 1); G = im(:, :, 2); B = im(:, :, 3);
   Y = 0.299 .* R + 0.587 .* G + 0.114 .* B;
+  
   Y(Y > 220) = 255;
+  Y(1, :) = 255; Y(end, :) = 255;
+  Y(:, 1) = 255; Y(:, end) = 255;
+  
   TestCase{i} = double(Y);
 end
 

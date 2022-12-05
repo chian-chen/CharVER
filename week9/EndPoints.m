@@ -1,10 +1,10 @@
 % DataBase, TestCase
 
-d = dir('../2/database/*.bmp');
-path = '../2/database/';
+d = dir('../1/database/*.bmp');
+path = '../1/database/';
 
-t = dir('../2/testcase/*.bmp');
-path_t = '../2/testcase/';
+t = dir('../1/testcase/*.bmp');
+path_t = '../1/testcase/';
 
 k = numel(d);
 
@@ -13,40 +13,37 @@ TestCase = cell(1, k);
 
 for i = 1 : k
   im = double(imread(strcat(path, d(i).name)));
-  R = im(:, :, 1); G = im(:, :, 2); B = im(:, :, 3);
+  R = im(:, :, 1);
+  G = im(:, :, 2);
+  B = im(:, :, 3);
   Y = 0.299 .* R + 0.587 .* G + 0.114 .* B;
-  
   Y(Y > 220) = 255;
-  Y(1, :) = 255; Y(end, :) = 255;
-  Y(:, 1) = 255; Y(:, end) = 255;
-  
   DataBase{i} = double(Y);
-  
   im = double(imread(strcat(path_t, t(i).name)));
-  R = im(:, :, 1); G = im(:, :, 2); B = im(:, :, 3);
+  R = im(:, :, 1);
+  G = im(:, :, 2);
+  B = im(:, :, 3);
   Y = 0.299 .* R + 0.587 .* G + 0.114 .* B;
-  
   Y(Y > 220) = 255;
-  Y(1, :) = 255; Y(end, :) = 255;
-  Y(:, 1) = 255; Y(:, end) = 255;
-  
   TestCase{i} = double(Y);
 end
 
 
 % Projection feature
 kk = k + k;
-Features = zeros(kk, 12);   
+Features = zeros(kk, 30);   
 
 
 for i = 1 : k
    
+    
     B = DataBase{i};
     B(B < 255) = 1;
     B(B == 255) = 0;
     
+   
     % Endpoint
-    Features(i, 1:12) = TurnPoint_Feature(B);
+    Features(i, 1:30) = EndPoint_Feature(B);
 
 end
 
@@ -57,13 +54,13 @@ for i = k+1 : kk
     B(B == 255) = 0;
    
     % Endpoint
-    Features(i, 1:12) = TurnPoint_Feature(B);
+    Features(i, 1:30) = EndPoint_Feature(B);
 end
 
 
 % Check the validity for features, set 90% zeros columns to all zeros
 
-for i = 1:12
+for i = 1:30
     value = sum(Features(:, i) > 0);
     if(value/kk <= 0.1)
         Features(:, i) = zeros(kk, 1);
@@ -84,23 +81,6 @@ for i = 1:N
     nrm = diag(1./std(Features(:, i),1));
     Features(:, i) = (Features(:, i) - ones(m,1) * mf) * nrm;
 end
-
-% sifted by K value
-
-x1 = 1:1:m/2;
-xo = m/2+1:1:m;
-
-for i = 1:N
-    mean1 = mean(Features(x1, i));
-    meano = mean(Features(xo, i));
-    var1 = sqrt(var(Features(x1, i)));
-    varo = sqrt(var(Features(xo, i)));
-    if abs(mean1 - meano)/sqrt(var1 * varo) < 0.3
-        Features(:, i) = zeros(kk, 1);
-    end
-end
-Features(:, ~any(Features, 1)) = [];
-
 
 % train_set, test_set and labels
 % 1: 本人  0: 非本人

@@ -1,10 +1,6 @@
 function Features = Width_Feature(B)
     
     
-    
-    B(B == 255) = 0;
-    B(B > 0) = 1;
-    
     Origin = B;
     ChangePoint = 1;
 
@@ -98,7 +94,7 @@ function Features = Width_Feature(B)
 end    
 
     % return -1 if the region is not continue
-function A = ContinueNeighbor(B, x, y) 
+function A = ContinueNeighbor(B, x, y)
     w = B(x-1:x+1, y-1:y+1);
     list = [w(1,1) w(1,2) w(1,3) w(2,3) w(3,3) w(3,2) w(3,1) w(2,1)];
     dot = sum(list);
