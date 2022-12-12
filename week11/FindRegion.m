@@ -13,12 +13,6 @@ Bo = B;
 Refo = Ref;
 
 
-figure; image(B * 255);
-colormap(gray(256));
-
-figure; image(Ref * 255);
-colormap(gray(256));
-
 
 
 Components = cell(1, 10);
@@ -30,9 +24,6 @@ while(sum(B, 'all') ~= 0)
     i = i + 1;
 end
 
-Components = Components(~cellfun('isempty',Components));
-
-
 Components_Ref = cell(1, 10);
 i = 1;
 
@@ -42,55 +33,68 @@ while(sum(Ref, 'all') ~= 0)
     i = i + 1;
 end
 
+Components = Components(~cellfun('isempty',Components));
 Components_Ref = Components_Ref(~cellfun('isempty',Components_Ref));
+
+
+
+
+inputRegionNumber = size(Components, 2);
+refRegionNumber = size(Components_Ref, 2);
+
+
+
+
+NormB = zeros(101, 101);
+for i = 1:inputRegionNumber
+    [m, n] = find(Components{i});
+
+    [m_new, n_new] = NormLocation(Bo, m, n);
+    m_new = round(m_new);
+    n_new = round(n_new);
+
+
+    for j = 1:length(m_new)
+        NormB(m_new(j) + 51, n_new(j) + 51) = i;
+    end
+end
+
+NormRef = zeros(101, 101);
+for i = 1:refRegionNumber
+    [m, n] = find(Components_Ref{i});
+
+    [m_new, n_new] = NormLocation(Refo, m, n);
+    m_new = round(m_new);
+    n_new = round(n_new);
+
+
+    for j = 1:length(m_new)
+        NormRef(m_new(j) + 51, n_new(j) + 51) = i;
+    end
+end
+
+
+NormBRegion = NormB;
+NormRefRegion = NormRef;
+
+while sum((NormBRegion == 0), 'all') ~= 0
+    NormBRegion = dilation(NormBRegion);
+end
+while sum((NormRefRegion == 0), 'all') ~= 0
+    NormRefRegion = dilation(NormRefRegion);
+end
+
+
+
+
 
 
 % side area
 
-input = size(Components, 2);
-ref = size(Components_Ref, 2);
 
 
 % input to reference
 
-region1 = Components{1};
-[m, n] = find(region1);
-
-[m_new, n_new] = NormLocation(Bo, m, n);
-m_new = round(m_new);
-n_new = round(n_new);
-
-NormRegion = zeros(101, 101);
-
-for i = 1:length(m_new)
-    NormRegion(m_new(i) + 51, n_new(i) + 51) = 1;
-end
-
-figure; image(NormRegion * 255);
-colormap(gray(256));
-
-
-% =========================
-
-
-region2 = Components{2};
-[m, n] = find(region2);
-
-[m_new, n_new] = NormLocation(Bo, m, n);
-m_new = round(m_new);
-n_new = round(n_new);
-
-NormRegion = zeros(101, 101);
-
-f = find(sum(Bo));
-
-
-for i = 1:length(m_new)
-    NormRegion(m_new(i) + 51, n_new(i) + 51) = 1;
-end
-
-figure; image(NormRegion * 255);
-colormap(gray(256));
 
 % reference to input
 
@@ -147,7 +151,6 @@ function [Region, B] = region(B, number)
     
     B(B == 100) = 0;
 end
-
 function [m_new, n_new] = NormLocation(B, m, n)
     % Find m1, m2
 
@@ -175,5 +178,40 @@ function [m_new, n_new] = NormLocation(B, m, n)
         n_new(i) = (n(i)-n_o)/d*100;
     end
     
+end
+function newB = dilation(B)
+    newB = B;
+    [row,col] = size(B);
+    
+    for i = 2:row - 1
+        for j =2:col - 1
+            if B(i, j) == 0
+                newB(i, j) = max(max(B(i-1:i+1, j-1:j+1)));
+            end
+        end
+    end
+    
+    for j = 2:col - 1
+        if B(1, j) == 0
+            newB(1, j) = max(max(B(1:2, j-1:j+1)));
+        end
+        if B(row, j) == 0
+            newB(row, j) = max(max(B(row-1:row, j-1:j+1)));
+        end
+    end
+    
+    for i = 2:row - 1
+        if B(i, 1) == 0
+            newB(i, 1) = max(max(B(i-1:i+1, 1:2)));
+        end
+        if B(i, col) == 0
+            newB(i, col) = max(max(B(i-1:i+1, col-1:col)));
+        end
+    end
+    
+    newB(1, 1) = max(max(B(1:2, 1:2)));
+    newB(1, col) = max(max(B(1:2, col-1:col)));
+    newB(row, 1) = max(max(B(row-1:row, 1:2)));
+    newB(row, col) = max(max(row-1:row, col-1:col));
 end
 
