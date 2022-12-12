@@ -54,12 +54,12 @@ end
 function [m_new, n_new] = NormLocation(B, m, n)
     % Find m1, m2
 
-    M = find(sum(B));
+    M = find(sum(B, 2));
     m1 = M(1); m2 = M(end);
 
     % Find n1, n2
 
-    N = find(sum(B, 2));
+    N = find(sum(B));
     n1 = N(1); n2 = N(end);
 
     % m_o, n_o

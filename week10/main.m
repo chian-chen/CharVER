@@ -2,11 +2,11 @@
 % ============== Reading Data =================
 % DataBase, TestCase
 
-d = dir('../3/database/*.bmp');
-path = '../3/database/';
+d = dir('../5/database/*.bmp');
+path = '../5/database/';
 
-t = dir('../3/testcase/*.bmp');
-path_t = '../3/testcase/';
+t = dir('../5/testcase/*.bmp');
+path_t = '../5/testcase/';
 
 k = numel(d);
 
