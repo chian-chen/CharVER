@@ -14,7 +14,7 @@ Refo = Ref;
 
 
 
-
+% divide region
 Components = cell(1, 10);
 i = 1;
 
@@ -37,26 +37,30 @@ Components = Components(~cellfun('isempty',Components));
 Components_Ref = Components_Ref(~cellfun('isempty',Components_Ref));
 
 
-
+% Norm and dilation
 
 inputRegionNumber = size(Components, 2);
 refRegionNumber = size(Components_Ref, 2);
 
 
-
-
 NormB = zeros(101, 101);
-for i = 1:inputRegionNumber
-    [m, n] = find(Components{i});
+Normside = cell(1, inputRegionNumber);
 
+for i = 1:inputRegionNumber
+    
+    [m, n] = find(Components{i});
     [m_new, n_new] = NormLocation(Bo, m, n);
     m_new = round(m_new);
     n_new = round(n_new);
-
+    
+    side = zeros(101, 101);
 
     for j = 1:length(m_new)
-        NormB(m_new(j) + 51, n_new(j) + 51) = i;
+        side(m_new(j) + 51, n_new(j) + 51) = i;
     end
+    
+    Normside{i} = side;
+    NormB = NormB + side;
 end
 
 NormRef = zeros(101, 101);
@@ -85,23 +89,87 @@ while sum((NormRefRegion == 0), 'all') ~= 0
 end
 
 
-
+% ====== Debug ======
+figure; image(NormB * 255 / inputRegionNumber);
+colormap(gray(256));
+figure; image(NormBRegion * 255 / inputRegionNumber);
+colormap(gray(256));
+figure; image(NormRef * 255 / refRegionNumber);
+colormap(gray(256));
+figure; image(NormRefRegion * 255 / refRegionNumber);
+colormap(gray(256));
+% ===================
 
 
 
 % side area
 
+area = zeros(1, inputRegionNumber);
+for i = 1: inputRegionNumber
+    area(i) = sum((NormBRegion == i), 'all');
+end
+
 
 % input to reference
 
+input_to_ref = zeros(1, inputRegionNumber);
+
+for i = 1: inputRegionNumber
+    
+    A = (NormBRegion == i);
+    maximal = 0;
+    
+    for j = 1:refRegionNumber
+        
+        B = (NormRefRegion == j);
+        if maximal < sum((A&B), 'all')
+            input_to_ref(i) = j;
+            maximal = sum((A&B), 'all');
+        end
+    end
+    
+end
 
 % reference to input
 
+ref_to_input = zeros(1, refRegionNumber);
+
+for i = 1: refRegionNumber
+    
+    A = (NormRefRegion == i);
+    maximal = 0;
+    
+    for j = 1:inputRegionNumber
+        
+        B = (NormBRegion == j);
+        
+        if maximal < sum((A&B), 'all')
+            ref_to_input(i) = j;
+            maximal = sum((A&B), 'all');
+        end
+    end
+    
+end
 
 % side: height/width
-
-
 % central of the side
+
+h_divide_w = zeros(1, inputRegionNumber);
+centerh = zeros(1, inputRegionNumber);
+centerw = zeros(1, inputRegionNumber);
+
+for i = 1:inputRegionNumber
+    B = Normside{i};
+    height = find(sum(B, 2));
+    h1 = height(1); h2 = height(end);
+
+    width = find(sum(B));
+    w1 = width(1); w2 = width(end);
+    
+    h_divide_w(i) = (h2-h1)/(w2-w1);
+    centerh(i) = (h2 + h1)/2;
+    centerw(i) = (w2 + w1)/2;
+end
 
 
 
@@ -211,6 +279,6 @@ function newB = dilation(B)
     newB(1, 1) = max(max(B(1:2, 1:2)));
     newB(1, col) = max(max(B(1:2, col-1:col)));
     newB(row, 1) = max(max(B(row-1:row, 1:2)));
-    newB(row, col) = max(max(row-1:row, col-1:col));
+    newB(row, col) = max(max(B(row-1:row, col-1:col)));
 end
 
