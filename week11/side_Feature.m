@@ -1,17 +1,19 @@
-
 % ====== Debug ======
-B = double(imread('../3/database/base_1_50_3.bmp'));
-B = 0.299 .* B(:, :, 1) + 0.587 .* B(:, :, 2) + 0.114 .* B(:, :, 3);
-B(B > 220) = 255;   B(B <= 220) = 1;    B(B == 255) = 0;
-
-Ref = double(imread('/Users/chenqian/Desktop/CharVER/3_30pt/song.png'));
-Ref = 0.299 .* Ref(:, :, 1) + 0.587 .* Ref(:, :, 2) + 0.114 .* Ref(:, :, 3);
-Ref(Ref > 220) = 255;   Ref(Ref <= 220) = 1;    Ref(Ref == 255) = 0;
+% B = double(imread('../3/database/base_1_50_3.bmp'));
+% B = 0.299 .* B(:, :, 1) + 0.587 .* B(:, :, 2) + 0.114 .* B(:, :, 3);
+% B(B > 220) = 255;   B(B <= 220) = 1;    B(B == 255) = 0;
+% 
+% Ref = double(imread('/Users/chenqian/Desktop/CharVER/3_30pt/song.png'));
+% Ref = 0.299 .* Ref(:, :, 1) + 0.587 .* Ref(:, :, 2) + 0.114 .* Ref(:, :, 3);
+% Ref(Ref > 220) = 255;   Ref(Ref <= 220) = 1;    Ref(Ref == 255) = 0;
 % ===================
 
+
+function Features = side_Feature(B, Ref)
+
+Features = zeros(1, 30);
 Bo = B;
 Refo = Ref;
-
 
 
 % divide region
@@ -90,29 +92,30 @@ end
 
 
 % ====== Debug ======
-figure; image(NormB * 255 / inputRegionNumber);
-colormap(gray(256));
-figure; image(NormBRegion * 255 / inputRegionNumber);
-colormap(gray(256));
-figure; image(NormRef * 255 / refRegionNumber);
-colormap(gray(256));
-figure; image(NormRefRegion * 255 / refRegionNumber);
-colormap(gray(256));
+% figure; image(NormB * 255 / inputRegionNumber);
+% colormap(gray(256));
+% figure; image(NormBRegion * 255 / inputRegionNumber);
+% colormap(gray(256));
+% figure; image(NormRef * 255 / refRegionNumber);
+% colormap(gray(256));
+% figure; image(NormRefRegion * 255 / refRegionNumber);
+% colormap(gray(256));
 % ===================
 
 
 
 % side area
 
-area = zeros(1, inputRegionNumber);
+area = zeros(1, 5);
 for i = 1: inputRegionNumber
     area(i) = sum((NormBRegion == i), 'all');
 end
 
+Features(1:5) = area(1:5);
 
 % input to reference
 
-input_to_ref = zeros(1, inputRegionNumber);
+input_to_ref = zeros(1, 5);
 
 for i = 1: inputRegionNumber
     
@@ -130,9 +133,11 @@ for i = 1: inputRegionNumber
     
 end
 
+Features(6:10) = input_to_ref(1:5);
+
 % reference to input
 
-ref_to_input = zeros(1, refRegionNumber);
+ref_to_input = zeros(1, 5);
 
 for i = 1: refRegionNumber
     
@@ -151,12 +156,14 @@ for i = 1: refRegionNumber
     
 end
 
+Features(11:15) = ref_to_input(1:5);
+
 % side: height/width
 % central of the side
 
-h_divide_w = zeros(1, inputRegionNumber);
-centerh = zeros(1, inputRegionNumber);
-centerw = zeros(1, inputRegionNumber);
+h_divide_w = zeros(1, 5);
+centerh = zeros(1, 5);
+centerw = zeros(1, 5);
 
 for i = 1:inputRegionNumber
     B = Normside{i};
@@ -172,7 +179,11 @@ for i = 1:inputRegionNumber
 end
 
 
+Features(16:20) = h_divide_w(1:5);
+Features(21:25) = centerh(1:5);
+Features(26:30) = centerw(1:5);
 
+end
 
 
 
