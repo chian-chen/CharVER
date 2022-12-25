@@ -42,7 +42,7 @@ Rows: Date, Columns: Web
 
 
 
-![datagram](https://imgur.com/CfED7GY)
+![datagram](https://imgur.com/CfED7GY.jpg)
 
 --- 
 
