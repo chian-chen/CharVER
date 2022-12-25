@@ -42,7 +42,7 @@ Rows: Date, Columns: Web
 
 
 
-![[截圖 2022-12-25 下午6.22.43.png | 450]]
+![datagram](https://imgur.com/CfED7GY)
 
 --- 
 
@@ -52,12 +52,12 @@ Rows: Date, Columns: Web
 
 Global
 
-![[截圖 2022-12-25 下午6.19.59.png | 450]]
+![Global](https://imgur.com/YhHQhJl.jpg)
 
 Local (Seasonal)
 
-![[截圖 2022-12-25 下午6.20.22.png | 450]]
+![Local](https://imgur.com/nVAra7D.jpg)
 
 Resid
 
-![[截圖 2022-12-25 下午6.20.58.png | 450]]
+![Resid](https://imgur.com/hIEjibi.jpg)
